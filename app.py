@@ -4,9 +4,18 @@ import plotly.express as px
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-# Load and clean the data
+# Load data
 df = pd.read_csv("Max Showroom Data.csv")
-df = df.dropna(subset=["Available Stock", "Sold Stock", "Total Items", "Target", "Price", "Restock Needed"])
+
+# Fill missing values with zeros (or choose appropriate defaults)
+df.fillna({
+    "Available Stock": 0,
+    "Sold Stock": 0,
+    "Total Items": 0,
+    "Target": 0,
+    "Price": 0,
+    "Restock Needed": 0
+}, inplace=True)
 
 # Prepare features and target
 X = df[["Available Stock", "Sold Stock", "Total Items", "Target", "Price"]]
@@ -25,10 +34,15 @@ st.sidebar.header("🔍 Filter Options")
 categories = ['All'] + sorted(df["Category"].dropna().unique().tolist())
 selected_category = st.sidebar.selectbox("Category", options=categories)
 
+# Filter data
 filtered_df = df.copy()
 if selected_category != "All":
     filtered_df = filtered_df[filtered_df["Category"] == selected_category]
 
+# Summary of data
+st.write(f"📊 Showing {len(filtered_df)} out of {len(df)} records")
+
+# Show filtered data
 st.subheader("📦 Filtered Inventory Data")
 st.dataframe(filtered_df.reset_index(drop=True), use_container_width=True)
 
