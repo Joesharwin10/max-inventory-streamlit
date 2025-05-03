@@ -10,7 +10,7 @@ st.set_page_config(page_title="Max Inventory Dashboard", layout="wide")
 # ----------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("chennai max-inventory.csv")
+    df = pd.read_csv("Max Showroom Data.csv")
     df.fillna({
         "Available Stock": 0,
         "Sold Stock": 0,
